@@ -4,6 +4,7 @@ from curio import Event, aopen, spawn
 from h2 import events
 from h2.connection import H2Connection
 from hyper2web.exceptions import DifferentStreamIdException
+from .utils import decodeurlencoding
 from .abstract import (AbstractApp, AbstractHTTP, AbstractRequest,
                        AbstractResponse)
 
@@ -124,8 +125,14 @@ class Request(AbstractRequest):
 		self.stream = stream
 		self.parameter = para
 	
-	def geturlparams(self, name):
-	   	return self.parameter[name]
+	def getrouteparameter(self, name):
+		if len(self.parameter[name].split("%")) > 1:
+			return decodeurlencoding(self.parameter[name])
+		else:
+			return self.parameter[name]
+	
+	def getformparameter(self, name):
+	   	raise NotImplementedError
 
 class Response(AbstractResponse):
 	def __init__(self, stream_id: int, http: HTTP):
