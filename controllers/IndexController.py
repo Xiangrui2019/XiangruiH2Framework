@@ -1,4 +1,6 @@
-class IndexController():
+from xiangruih2framework.controller import Controller
+
+class IndexController(Controller):
     
     @staticmethod
     async def Home(request, response):
