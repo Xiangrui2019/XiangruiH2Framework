@@ -5,6 +5,8 @@ from h2 import events
 from h2.connection import H2Connection
 from hyper2web.exceptions import DifferentStreamIdException
 from .utils import decodeurlencoding
+import  json
+from jinja2 import Template
 from .abstract import (AbstractApp, AbstractHTTP, AbstractRequest,
                        AbstractResponse)
 
@@ -172,6 +174,18 @@ class Response(AbstractResponse):
 	async def send_status_code(self, status_code):
 		self.headers[':status'] = str(status_code)
 		await self.send(None)
+
+	async def send_json(self, data):
+		jsonstring = json.dumps(data)
+		self.set_header("Content-Type", "application/json")
+		await self.send(bytes(jsonstring, encoding='utf-8'))
+
+	async def send_view(self, viewpath, **context):
+		with open("./views/{}.html".format(viewpath)) as f:
+			template = Template(f.read())
+			result = template.render(**context)
+			self.set_header("content-type", "text/html; charset=UTF-8")
+			await self.send(bytes(result, encoding="utf-8"))
 
 	async def send(self, data: bytes or None):
 		headers = tuple(self.headers.items())
