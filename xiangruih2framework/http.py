@@ -126,13 +126,18 @@ class Request(AbstractRequest):
 		self.parameter = para
 	
 	def getrouteparameter(self, name):
-		if len(self.parameter[name].split("%")) > 1:
-			return decodeurlencoding(self.parameter[name])
-		else:
-			return self.parameter[name]
-	
+		return self.checkchineseortransit(self.parameter[name])
+
 	def getformparameter(self, name):
-	   	raise NotImplementedError
+	   	for datai in str(self.stream.data, encoding='utf-8').split("&"):
+	   		if datai.split("=")[0] == name:
+	   			return self.checkchineseortransit(datai.split("=")[1])
+
+	def checkchineseortransit(self, data):
+		if len(data.split("%")) > 1:
+			return decodeurlencoding(data)
+		else:
+			return data
 
 class Response(AbstractResponse):
 	def __init__(self, stream_id: int, http: HTTP):
