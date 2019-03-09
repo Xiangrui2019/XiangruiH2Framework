@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>A HTTP2 HTML</title>
+    <title>{{appname}}</title>
 </head>
 <body>
-    <h1>{{ app }}</h1>
-    <form action="/post" method="post">
-        <input type="text" name="a">
-        <input type="text" name="n">
-        <input type="submit" value="提交">
+    <h2>{{appname}}</h2>
+    <form action="/add" method="post">
+        <textarea name="data" id="data" cols="30" rows="10"></textarea>    
+        <br>
+        <input type="submit" value="提交数据">
     </form>
 </body>
 </html>

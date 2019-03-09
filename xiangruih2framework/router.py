@@ -1,7 +1,5 @@
 from .abstract import AbstractRouter
-from .exceptions import RouteNotRegisteredException
 from .http import HTTP, Stream, Request, Response
-
 
 class Router(AbstractRouter):
 	def __init__(self, default_get):
@@ -61,4 +59,6 @@ class Router(AbstractRouter):
 			res = Response(stream.stream_id, http)
 			await handler(req, res)
 		else:
-			raise RouteNotRegisteredException(path + ' 没有注册对应的路由')
+			req = Request(stream, parameters)
+			res = Response(stream.stream_id, http)
+			await res.send_status_code(404)
