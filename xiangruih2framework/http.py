@@ -148,7 +148,7 @@ class Response(AbstractResponse):
 		self.headers = OrderedDict([
 			(':status', '200'),
 			('content-length', '0'),
-			('server', 'XiangruiH2Framework')
+			('server', 'h2framework')
 		])
 
 	def set_header(self, field, value):
