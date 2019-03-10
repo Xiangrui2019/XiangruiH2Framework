@@ -3,7 +3,7 @@ from collections import OrderedDict
 from curio import Event, aopen, spawn
 from h2 import events
 from h2.connection import H2Connection
-from hyper2web.exceptions import DifferentStreamIdException
+from .exceptions import DifferentStreamIdException
 from .utils import decodeurlencoding
 import  json
 from jinja2 import Template
@@ -177,8 +177,13 @@ class Response(AbstractResponse):
 
 	async def send_json(self, data):
 		jsonstring = json.dumps(data)
-		self.set_header("Content-Type", "application/json")
+		self.set_header("Content-Type", "application/json; charset=UTF-8")
 		await self.send(bytes(jsonstring, encoding='utf-8'))
+	
+	async def send_bytes(self, data):
+		datastring = str(data)
+		self.set_header("Content-Type", "application/bytes")
+		return self.send(bytes(datastring, encoding='utf-8'))
 
 	async def send_view(self, viewpath, **context):
 		with open("./views/{}.html".format(viewpath)) as f:

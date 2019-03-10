@@ -8,4 +8,4 @@ class IndexController(Controller):
 
     @staticmethod
     async def Add(request, response):
-        await response.send_view("add", data=request.getformparameter("data"))
+        await response.send_bytes({"a":"b"})
